@@ -1,5 +1,4 @@
 
-
 import sys
 import random
 import time
@@ -8,38 +7,64 @@ import time
 def riley(aNums, aTarg):
     ops = ['a','s','p','q']
     #lists
-    lNumbers = []   #6! combinations
-    lOperators = [] #4^5 combinations
-    lInserts = []   #5! combinations
-    dResults = {}   #6 results per solution, dictionary indexed on 3-tuple of indicies
-    dPivot = {}     #dictionary indexed on result, containing Tracker strings
+    lNumbers = []   #6! combinations (720)
+    lOperators = [] #4^5 combinations (1024)
+    lInserts = []   #5! combinations (120)
+    #dResults = {}   #6 results per solution, dictionary indexed on 3-tuple of indicies
+    #dPivot = {}     #dictionary indexed on result, containing Tracker strings
     #set up
-    for i in range(100):
-        lNumbers.append(random.sample(aNums,k=len(aNums)))
-    for i in range(100):
-        lOperators.append(random.choices(ops,k=5))
-    for i in range(100):
-        tempInsert = []
-        tempInsert.append(random.choice([0,1,2,3,4]))
-        tempInsert.append(random.choice([0,1,2,3]))
-        tempInsert.append(random.choice([0,1,2]))
-        tempInsert.append(random.choice([0,1]))
-        tempInsert.append(0)
-        lInserts.append(tempInsert)
-    #print(lNumbers)
-    #print(lOperators)
-    #print(lInserts)
+    for i in range(6):   #full: generate exhaustive list of all 6! combinations
+        for ii in range(5):
+            for iii in range(4):
+                for iiii in range(3):
+                    for iiiii in range(2):
+                        copyNums = [a for a in aNums]
+                        tempN = []
+                        tempN.append(copyNums.pop(i))
+                        tempN.append(copyNums.pop(ii))
+                        tempN.append(copyNums.pop(iii))
+                        tempN.append(copyNums.pop(iiii))
+                        tempN.append(copyNums.pop(iiiii))
+                        tempN.append(copyNums[0])
+                        lNumbers.append(tempN)
+    for i in range(4):  #full: generate exhaustive list of all 4^5 combinations
+        for ii in range(4):
+            for iii in range(4):
+                for iiii in range(4):
+                    for iiiii in range(4):
+                        tempO = []
+                        tempO.append(ops[i])
+                        tempO.append(ops[ii])
+                        tempO.append(ops[iii])
+                        tempO.append(ops[iiii])
+                        tempO.append(ops[iiiii])
+                        lOperators.append(tempO)
+    for i in range(5):   #full: generate exhaustive list of all 5! combinations
+        for ii in range(4):
+            for iii in range(3):
+                for iiii in range(2):
+                    tempI = [i,ii,iii,iiii,0]
+                    lInserts.append(tempI)
+#    for i in range(72*2):   #partial 
+#        lNumbers.append(random.sample(aNums,k=len(aNums)))
+#    for i in range(102):  #partial
+#        lOperators.append(random.choices(ops,k=5))
+#    for i in range(12):   #partial
+#        tempInsert = []
+#        tempInsert.append(random.choice([0,1,2,3,4]))
+#        tempInsert.append(random.choice([0,1,2,3]))
+#        tempInsert.append(random.choice([0,1,2]))
+#        tempInsert.append(random.choice([0,1]))
+#        tempInsert.append(0)
+#        lInserts.append(tempInsert)
+    print(lInserts)
+    print("len:", len(lInserts))
+    print("Begin Search Loops")
     for i,a in enumerate(lNumbers):
         for j,b in enumerate(lOperators):
             for k,c in enumerate(lInserts):
                 lWorking = [x for x in a]
-                #print("a: ", a)
-                #print("b: ", b)
-                #print("c: ", c)
-                #print("lWorking",lWorking)
-                #print(type(lWorking[0]))
                 lTracker = [str(x) for x in a]
-                #print("lTracker",lTracker)
                 lIntermediateResults = []
                 for l in range(5):
                     n1 = lWorking.pop(0)
@@ -63,7 +88,7 @@ def riley(aNums, aTarg):
                             sTemp = '('+s1+'/'+s2+')'
                         else:
                             lIntermediateResults.append(temp)
-                            dResults[(i,j,k)] = lIntermediateResults
+                            #dResults[(i,j,k)] = lIntermediateResults
                             break
                     lWorking.insert(c[l],temp)
                     lTracker.insert(c[l],sTemp)
@@ -73,11 +98,11 @@ def riley(aNums, aTarg):
                         #print("SOLUTION! ",temp,"=",sTemp)
                         return str(temp)+'='+sTemp
                     lIntermediateResults.append(temp)
-                dResults[(i,j,k)] = lIntermediateResults
+                #dResults[(i,j,k)] = lIntermediateResults
     #No results found
     return "This one's impossible, actually!"
 
-random.seed(344)
+random.seed()
 
 bigOnes = [100,75,50,25]
 smallOnes = [10,9,8,7,6,5,4,3,2,1]
@@ -107,7 +132,7 @@ else:
     print("    ",target)
     print(' '.join([str(a) for a in nums]))
     print("Your time starts...\n")
-    time.sleep(5)
+    time.sleep(3)
     print("\33[3A")
     print("Your time starts... now!")
     for i in range(30):
