@@ -3,9 +3,9 @@ import random
 
 random.seed()
 
-consos = ['b','c','d','f','g','h','j','k','l','m','n','p','q','r','s','t','v','w','x','y','z']
+consos = ['B','C','D','F','G','H','J','K','L','M','N','P','Q','R','S','T','V','W','X','Y','Z']
 freqc  = [ 2 , 3 , 6 , 2 , 3 , 2 , 1 , 1 , 5 , 4 , 8 , 4 , 1 , 9 , 9 , 9 , 1 , 1 , 1 , 1 , 1 ]
-vowels = ['a','e','i','o','u']
+vowels = ['A','E','I','O','U']
 freqv  = [ 15, 21, 13, 13, 5 ]
 
 vstack = []
