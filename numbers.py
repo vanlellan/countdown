@@ -57,9 +57,6 @@ def riley(aNums, aTarg):
 #        tempInsert.append(random.choice([0,1]))
 #        tempInsert.append(0)
 #        lInserts.append(tempInsert)
-    print(lInserts)
-    print("len:", len(lInserts))
-    print("Begin Search Loops")
     for i,a in enumerate(lNumbers):
         for j,b in enumerate(lOperators):
             for k,c in enumerate(lInserts):
