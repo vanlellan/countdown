@@ -97,45 +97,62 @@ def riley(aNums, aTarg):
                     lIntermediateResults.append(temp)
                 #dResults[(i,j,k)] = lIntermediateResults
     #No results found
-    return "This one's impossible, actually!"
+    return False
+
+def blit(aSnap):
+    #overwrite text output on the terminal
+    print("\33["+str(len(aSnap)+1)+"A")
+    for i in aSnap:
+        print(i)
 
 random.seed()
 
 bigOnes = [100,75,50,25]
 smallOnes = [10,9,8,7,6,5,4,3,2,1]
 
-if sys.argv[1] not in ['0','1','2','3','4']:
-    print("Must specify number of large ones, 0-4")
+gameOutput = ["     ___             ", "_ _ _ _ _ _", "Your numbers are...",""]
+bigs = int(input("How many big ones?"))
+print("\n\n")
+if bigs not in [0,1,2,3,4]:
+    print("ERROR")
 else:
-    bigs = int(sys.argv[1])
     littles = 6-bigs
     nums = []
     nums += random.sample(bigOnes,k=bigs)
+    nums.sort(reverse=True)
     nums += random.sample(smallOnes+smallOnes+smallOnes,k=littles)
     target = random.randint(100,999)
+    time.sleep(1)
     for i in range(6):
         if i==0:
-            print("\n"+"_ "*6+'\n\n')
+            gameOutput[1] = "_ "*6
         else:
-            print("\n"+"_ "*(6-i)+' '.join([str(a) for a in nums][-i:])+'\n\n')
+            gameOutput[1] = "_ "*(6-i)+' '.join([str(a) for a in nums][-i:])
+        blit(gameOutput)
         time.sleep(1)
-        print("\33[5A")
+    gameOutput[1] = ' '.join([str(a) for a in nums])
+    gameOutput[2] = "...and the target..."
     for j in range(1000):
         rand = random.randint(100,999)
-        print('     '+str(rand)+'\n'+' '.join([str(a) for a in nums]))
-        print("...and the target...\n")
+        gameOutput[0] = '     '+str(rand)
+        blit(gameOutput)
         time.sleep(0.002)
-        print("\33[5A")
-    print("    ",target)
-    print(' '.join([str(a) for a in nums]))
-    print("Your time starts...\n")
+    gameOutput[0] = '     '+str(target)
+    gameOutput[2] = ("Your time starts...")
+    blit(gameOutput)
     time.sleep(3)
-    print("\33[3A")
-    print("Your time starts... now!")
-    for i in range(30):
-        print('     ',30-i, ' ')
+    gameOutput[2] = ("Your time starts... now!")
+    blit(gameOutput)
+    for i in range(31):
+        gameOutput[3] = '     '+str(30-i)+'   '
         time.sleep(1)
-        print("\33[2A")
+        blit(gameOutput)
+    print("Rachel, can it be done?")
+    print("Leave it with me...")
+    print("\33[2A")
     rachel = riley(nums,target)
-    _ = input("Rachel, can it be done?")
-    print(rachel)
+    if rachel:
+        _ = input("Yes. (Press enter for solution)")
+        print(rachel)
+    else:
+        print("This one's impossible, actually!")
